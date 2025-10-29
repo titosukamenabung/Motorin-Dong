@@ -70,10 +70,8 @@ public class Motorin extends javax.swing.JFrame {
 
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 1080));
         jPanel1.setLayout(null);
-
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo motor[5].png"))); // NOI18N
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(290, 210, 350, 350);
+        jLabel4.setBounds(130, 210, 350, 350);
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton1.setText("Login");
@@ -112,10 +110,8 @@ public class Motorin extends javax.swing.JFrame {
         });
         jPanel1.add(motorinpw);
         motorinpw.setBounds(710, 352, 126, 30);
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/background login .jpg"))); // NOI18N
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(0, 100, 1070, 550);
+        jLabel2.setBounds(0, 80, 1070, 550);
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -40, 1150, 630));
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 330, -1, -1));
