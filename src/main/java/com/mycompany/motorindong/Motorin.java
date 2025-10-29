@@ -1,3 +1,5 @@
+package com.mycompany.motorindong;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -88,6 +90,7 @@ public class Motorin extends javax.swing.JFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(610, 300, 90, 34);
 
+        motorin31.setText("motorin31");
         motorin31.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 motorin31ActionPerformed(evt);
@@ -126,10 +129,12 @@ public class Motorin extends javax.swing.JFrame {
 
     private void motorinpwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_motorinpwActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_motorinpwActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
