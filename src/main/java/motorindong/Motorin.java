@@ -1,4 +1,4 @@
-package com.mycompany.motorindong;
+package motorindong;
 
 
 import java.sql.Connection;

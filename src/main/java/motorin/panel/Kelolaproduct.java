@@ -143,8 +143,8 @@ public class Kelolaproduct extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        AddNewProduct Pd = new AddNewProduct(null, true);
-        Pd.setVisible(true);
+//        AddNewProduct Pd = new AddNewProduct(null, true);
+//        Pd.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

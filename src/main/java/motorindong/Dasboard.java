@@ -2,7 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mycompany.motorindong;
+package motorindong;
+
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import javax.swing.JPanel;
+import motorin.panel.Kelolaproduct;
+import motorin.panel.kelolaUser;
+import com.motorin.db.pegawai;
 
 /**
  *
@@ -10,13 +17,15 @@ package com.mycompany.motorindong;
  */
 public class Dasboard extends javax.swing.JFrame {
     
+    pegawai P;
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Dasboard.class.getName());
 
-    /**
-     * Creates new form Dasboard
-     */
+
     public Dasboard() {
         initComponents();
+        
+        
     }
 
     /**
@@ -79,10 +88,9 @@ public class Dasboard extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(64, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(

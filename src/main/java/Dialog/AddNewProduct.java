@@ -317,12 +317,12 @@ public class AddNewProduct extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        try {
-            long code = ThreadLocalRandom.current().nextLong(10_000_000L, 100_000_000L);
-            String productCode = "PD-".concat(""+code);
-            jTextField1.setText(productCode);
-        } catch (Exception e) {
-        }
+//        try {
+//            long code = ThreadLocalRandom.current().nextLong(10_000_000L, 100_000_000L);
+//            String productCode = "PD-".concat(""+code);
+//            jTextField1.setText(productCode);
+//        } catch (Exception e) {
+//        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
