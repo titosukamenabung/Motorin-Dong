@@ -4,6 +4,12 @@
  */
 package com.mycompany.motorindong;
 
+import com.motorin.db.Koneksi;
+import java.awt.Frame;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 /**
  *
  * @author ADVAN
@@ -57,6 +63,11 @@ public class login extends javax.swing.JPanel {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jButton1.setText("LOGIN\n");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/background login 1.jpg"))); // NOI18N
         jLabel4.setText("jLabel4");
@@ -125,8 +136,13 @@ public class login extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void motorinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_motorinActionPerformed
+
         // TODO add your handling code here:
     }//GEN-LAST:event_motorinActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        login();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -139,4 +155,57 @@ public class login extends javax.swing.JPanel {
     private javax.swing.JTextField motorin;
     private javax.swing.JPasswordField motorinpw;
     // End of variables declaration//GEN-END:variables
+
+    private login() {
+        String usr = txtUsername.getText();
+        String pwd = new String(txtPassword.getPassword());
+        try {
+            Connection K = Koneksi.Go();
+            Statement ST = K.createStatement();
+            String Q = "SELECT * FROM pegawai "
+                    + "WHERE "
+                    + "username='" + usr + "' AND "
+                    + "password_hash='" + pwd + "'";
+            ResultSet RS = ST.executeQuery(Q);
+            int n = 0;
+            Pegawai Pg = new Pegawai();
+            while (RS.next()) {
+                n++;
+                Pg.setId(RS.getInt("id_pegawai"));
+                Pg.setNama(RS.getString("nama_pegawai"));
+                Pg.setJabatan(RS.getString("jabatan"));
+                Pg.setUsername(RS.getString("username"));
+                Pg.setPassword(RS.getString("password_hash"));
+            }
+            if (n > 0) {
+                if (Pg.getJabatan().equals("ADMIN")) {
+                    this.setVisible(false);
+                    DashboardAdmin DA = new DashboardAdmin();
+                    DA.P = Pg;
+                    DA.setVisible(true);
+                    DA.setExtendedState(Frame.MAXIMIZED_BOTH);
+                }else if(Pg.getJabatan().equals("KASIR")){
+                    //kita redirect ke dashboard kasir
+                }else if(Pg.getJabatan().equals("MANAJER")){
+                    //kita redirect ke dashboard manajer
+                }else {
+                    //opsional
+                }
+            } else {
+                System.err.println("Akun tidak ditemukan");
+            }
+        } catch (Exception e) {
+        }
+
+    }
+
+    private static class txtPassword {
+
+        private static String getPassword() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        public txtPassword() {
+        }
+    }
 }
