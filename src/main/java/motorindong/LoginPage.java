@@ -190,20 +190,20 @@ public class LoginPage extends javax.swing.JFrame {
             String Q = "SELECT * FROM pegawai "
                     + "WHERE "
                     + "username='" + usr + "' AND "
-                    + "password_hash='" + pwd + "'";
+                    + "password='" + pwd + "'";
             ResultSet RS = ST.executeQuery(Q);
             int n = 0;
             pegawai Pg = new pegawai();
             while (RS.next()) {
                 n++;
                 Pg.setId(RS.getInt("id_pegawai"));
-                Pg.setNama(RS.getString("nama_pegawai"));
-                Pg.setJabatan(RS.getString("jabatan"));
+                Pg.setNama(RS.getString("nama"));
                 Pg.setUsername(RS.getString("username"));
-                Pg.setPassword(RS.getString("password_hash"));
+                Pg.setPassword(RS.getString("password"));
+                Pg.setJabatan(RS.getString("jabatan"));
             }
             if (n > 0) {
-                if (Pg.getJabatan().equals("ADMIN")) {
+                if (Pg.getJabatan().equals("admin")) {
                     this.setVisible(false);
                     Dashboard D = new Dashboard();
                     D.p = Pg;
@@ -220,6 +220,7 @@ public class LoginPage extends javax.swing.JFrame {
                 System.err.println("Akun tidak ditemukan");
             }
         } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Terjadi error pada database:\n" + e.getMessage());
         }
 
     }

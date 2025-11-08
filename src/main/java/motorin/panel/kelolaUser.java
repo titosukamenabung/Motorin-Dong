@@ -15,6 +15,7 @@ import com.motorin.db.pegawai;
 
 
 
+
 /**
  *
  * @author Lenovo
@@ -208,3 +209,31 @@ public class kelolaUser extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
+
+    public static void refreshData() {
+        try {
+            DefaultTableModel model = (DefaultTableModel) JTable1.getModel();
+            for (int i = model.getRowCount() - 1; i >= 0; i--) {
+                model.removeRow(i);
+            }
+
+            Connection K = koneksi.Go();
+            String Q = "SELECT * FROM pegawai";
+            Statement S = K.createStatement();
+            ResultSet R = S.executeQuery(Q);
+            while (R.next()) {
+                int id = R.getInt("id_pegawai");
+                String nama = R.getString("nama_pegawai");
+                String jabatan = R.getString("jabatan");
+                String username = R.getString("username");
+                String password = R.getString("password_hash");
+                Object[] datausers = {id, nama, jabatan, username, password};
+                model.addRow(datausers);
+            }
+
+        }catch (Exception e) {
+            
+           }
+}
+
+
