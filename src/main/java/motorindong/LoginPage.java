@@ -8,8 +8,9 @@ import java.awt.Frame;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import com.motorin.db.Koneksi;
+import com.motorin.db.koneksi;
 import com.motorin.db.pegawai;
+
 
    
 
@@ -41,8 +42,8 @@ public class LoginPage extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        motorin05 = new javax.swing.JTextField();
-        motorinpw = new javax.swing.JPasswordField();
+        txtUsername = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JPasswordField();
         jSeparator1 = new javax.swing.JSeparator();
         btnLogin = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -54,8 +55,6 @@ public class LoginPage extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1920, 1080));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
-
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(204, 0, 0));
         jLabel1.setText("Username");
@@ -64,15 +63,15 @@ public class LoginPage extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(204, 0, 0));
         jLabel2.setText("Password");
 
-        motorin05.addActionListener(new java.awt.event.ActionListener() {
+        txtUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                motorin05ActionPerformed(evt);
+                txtUsernameActionPerformed(evt);
             }
         });
 
-        motorinpw.addActionListener(new java.awt.event.ActionListener() {
+        txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                motorinpwActionPerformed(evt);
+                txtPasswordActionPerformed(evt);
             }
         });
 
@@ -101,12 +100,12 @@ public class LoginPage extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(motorin05, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(motorinpw)))
-                        .addGap(0, 28, Short.MAX_VALUE)))
+                                .addComponent(txtPassword)))
+                        .addGap(0, 8, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -119,44 +118,43 @@ public class LoginPage extends javax.swing.JFrame {
                 .addGap(59, 59, 59)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(motorin05, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(motorinpw, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                        .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
                         .addGap(3, 3, 3)))
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 270, 420, 190));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 280, 400, -1));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/logo motor[5].png"))); // NOI18N
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 220, 310, 300));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 230, 310, 300));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/background login 1.jpg"))); // NOI18N
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1250, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 1250, -1));
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void motorin05ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_motorin05ActionPerformed
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_motorin05ActionPerformed
+    }//GEN-LAST:event_txtUsernameActionPerformed
 
-    private void motorinpwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_motorinpwActionPerformed
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_motorinpwActionPerformed
+    }//GEN-LAST:event_txtPasswordActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        
-        Login();
+        LoginNow();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
@@ -193,27 +191,15 @@ public class LoginPage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField motorin;
-    private javax.swing.JTextField motorin05;
-    private javax.swing.JTextField motorin1;
-    private javax.swing.JTextField motorin2;
-    private javax.swing.JTextField motorin3;
-    private javax.swing.JTextField motorin4;
-    private javax.swing.JTextField motorin5;
-    private javax.swing.JTextField motorin6;
-    private javax.swing.JPasswordField motorinpw;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-    private void Login() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-}
-
     private void LoginNow() {
-        String usr = motorin31.getText();
-        String pwd = new String(motorinpw.getPassword());
+        String usr = txtUsername.getText();
+        String pwd = new String(txtPassword.getPassword());
         try {
-            Connection K = Koneksi.Go();
+            Connection K = koneksi.Go();
             Statement ST = K.createStatement();
             String Q = "SELECT * FROM pegawai "
                     + "WHERE "
@@ -251,4 +237,4 @@ public class LoginPage extends javax.swing.JFrame {
         }
 
     }
-
+}

@@ -4,30 +4,38 @@
  */
 package com.motorin.db;
 
-
+import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
 
-public class koneksi {
-    private static Connection mysqlconfig;
 
-    public static Connection configDB() throws SQLException {
-        try {
-            String url = "jdbc:mysql://localhost:3306/motorindong";
-            String user = "root";
-            String pass = "";
-
-            mysqlconfig = DriverManager.getConnection(url, user, pass);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Koneksi Database Gagal! " + e.getMessage());
-        }
-        return mysqlconfig;
-    }
-}
 /**
  *
  * @author Lenovo
  */
+public class koneksi {
+    
+    public static Connection Go() {
+        try {
+            MysqlDataSource MDS = new MysqlDataSource();
+            MDS.setServerName("localhost");
+            MDS.setDatabaseName("posc"); 
+            MDS.setUser("root");
+            MDS.setPassword("");
+            MDS.setPort(3306);
+            MDS.setServerTimezone("Asia/Jakarta");
+            return MDS.getConnection();
+        } catch (SQLException e) {
+            System.err.println("Gagal Terhubung. \n"
+                    + "Error: "+e.getMessage());
+        }
+        return null;
+    }
+    
+//    public static void main(String[] args) {
+//        Connection C = Koneksi.Go();
+//    }
+}
+
+    
 
