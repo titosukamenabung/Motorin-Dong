@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 import motorin.panel.kelolaUser;
-import com.motorin.db.Koneksi;
+import com.motorin.db.koneksi;
 import com.motorin.db.pegawai;
 
 

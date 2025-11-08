@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.motorin.db;
-
+ 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,12 +19,15 @@ public class koneksi {
         try {
             MysqlDataSource MDS = new MysqlDataSource();
             MDS.setServerName("localhost");
-            MDS.setDatabaseName("posc"); 
+            MDS.setDatabaseName("motorindong"); 
             MDS.setUser("root");
             MDS.setPassword("");
-            MDS.setPort(3306);
+            MDS.setPortNumber(3306);
             MDS.setServerTimezone("Asia/Jakarta");
-            return MDS.getConnection();
+            
+            Connection conn = MDS.getConnection();
+            System.out.println("Koneksi Ke databe berhasil");
+            return conn;
         } catch (SQLException e) {
             System.err.println("Gagal Terhubung. \n"
                     + "Error: "+e.getMessage());
@@ -32,10 +35,10 @@ public class koneksi {
         return null;
     }
     
-//    public static void main(String[] args) {
-//        Connection C = Koneksi.Go();
+    public static void main(String[] args) {
+        Connection C = koneksi.Go();
 //    }
-}
+}}
 
     
 
