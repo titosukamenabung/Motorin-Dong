@@ -7,7 +7,7 @@ package Dialog;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.swing.JOptionPane;
-import motorin.panel.KelolaUser;
+import motorin.panel.;
 import com.motorin.db.koneksi;
 
 /**
