@@ -4,11 +4,20 @@
  */
 package Dialog;
 
+import java.sql.Connection;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import motorin.panel.KelolaUser;
+import com.motorin.db.koneksi;
+import com.motorin.db.pegawai;
+
+
 /**
  *
  * @author Lenovo
  */
 public class DeleteUser extends javax.swing.JDialog {
+    public pegawai p;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DeleteUser.class.getName());
 
@@ -37,13 +46,14 @@ public class DeleteUser extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
+        jLabel1.setBackground(new java.awt.Color(204, 0, 0));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("jLabel1");
 
-        jButton1.setBackground(new java.awt.Color(0, 153, 0));
+        jButton1.setBackground(new java.awt.Color(204, 0, 0));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Ya, Hapus data");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -89,7 +99,7 @@ public class DeleteUser extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -105,6 +115,14 @@ public class DeleteUser extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {                                  
+        jLabel1.setText(""
+                + "<html>"
+                + "<p>"
+                + "Apakah Anda yakin ingin mengahapus data ["+p.getNama()+"]?"
+                + "</p>"
+                + "</html>");
+    } 
     /**
      * @param args the command line arguments
      */
@@ -149,4 +167,23 @@ public class DeleteUser extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
+    private void hapusDataUser() {
+        try {
+            Connection K = koneksi.Go();
+            String Q = "DELETE FROM pegawai "
+                    + "WHERE id_pegawai="+p.getId()+"";
+            Statement S = K.createStatement();
+            S.executeUpdate(Q);
+            
+            KelolaUser.refreshData("");
+            this.dispose();
+            JOptionPane.showMessageDialog(null, "Data berhasil dihapus"); 
+            
+            
+        } catch (Exception e) {
+            //error handling
+        }
+    }
 }
+

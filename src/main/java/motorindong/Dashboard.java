@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import javax.swing.JPanel;
 import motorin.panel.Kelolaproduct;
-import motorin.panel.kelolaUser;
+import motorin.panel.KelolaUser;
 import com.motorin.db.pegawai;
 
 /**

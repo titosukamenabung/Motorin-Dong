@@ -4,19 +4,32 @@
  */
 package Dialog;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
+import javax.swing.SwingWorker;
+import com.motorin.db.koneksi;
+
+
 /**
  *
  * @author Lenovo
  */
-public class AddNewProduct extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AddNewProduct.class.getName());
+public class AddNewProduct extends javax.swing.JDialog {
 
     /**
      * Creates new form AddNewProduct
+     * @param parent
+     * @param modal
      */
-    public AddNewProduct() {
+    public AddNewProduct(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
+        
+        showProductCategory();
     }
 
     /**
@@ -347,7 +360,16 @@ public class AddNewProduct extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new AddNewProduct().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {
+            AddNewProduct dialog = new AddNewProduct(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -383,4 +405,27 @@ public class AddNewProduct extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     // End of variables declaration//GEN-END:variables
+
+     private void showProductCategory() {
+        SwingWorker worker = new SwingWorker() {
+            @Override
+            protected Object doInBackground() throws Exception {
+                try {
+                    jComboBox1.removeAllItems();
+                    Connection C = koneksi.Go();
+                    Statement ST = C.createStatement();
+                    ResultSet RS = ST.executeQuery("SELECT * FROM kategoribarang");
+                    while (RS.next()) {                         
+                        String id = ""+RS.getInt("id_kategori");
+                        String nama = RS.getString("nama_kategori");
+                        String val = id.concat("-").concat(nama);
+                        jComboBox1.addItem(val); 
+                    }
+                } catch (SQLException e) {
+                }
+                return null;                
+            }
+        };
+        worker.execute();
+    }
 }

@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import motorin.panel.kelolaUser;
+import motorin.panel.KelolaUser;
 import com.motorin.db.koneksi;
 import com.motorin.db.pegawai;
 
@@ -54,7 +54,7 @@ public class EditUser extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(0, 153, 51));
+        jPanel1.setBackground(new java.awt.Color(204, 0, 0));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -81,7 +81,7 @@ public class EditUser extends javax.swing.JDialog {
             }
         });
 
-        btnBatal.setBackground(new java.awt.Color(204, 0, 0));
+        btnBatal.setBackground(new java.awt.Color(0, 0, 0));
         btnBatal.setForeground(new java.awt.Color(255, 255, 255));
         btnBatal.setText("Batal");
 
@@ -237,7 +237,7 @@ public class EditUser extends javax.swing.JDialog {
             PS.setInt(5, P.getId());
             PS.executeUpdate();
             
-            kelolaUser.refreshData("");
+            KelolaUser.refreshData("");
             this.setVisible(false); 
             
             JOptionPane.showMessageDialog(null, "Data berhasil diubah"); 

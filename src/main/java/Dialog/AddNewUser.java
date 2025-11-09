@@ -4,18 +4,23 @@
  */
 package Dialog;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import javax.swing.JOptionPane;
+import motorin.panel.KelolaUser;
+import com.motorin.db.koneksi;
+
 /**
  *
  * @author Lenovo
  */
-public class AddNewUser extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AddNewUser.class.getName());
+public class AddNewUser extends javax.swing.JDialog {
 
     /**
      * Creates new form AddNewUser
      */
-    public AddNewUser() {
+    public AddNewUser(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
     }
 
@@ -60,7 +65,7 @@ public class AddNewUser extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBackground(new java.awt.Color(204, 255, 204));
+        jPanel2.setBackground(new java.awt.Color(51, 51, 51));
 
         jLabel1.setText("Nama");
 
@@ -152,7 +157,7 @@ public class AddNewUser extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 271, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -200,7 +205,18 @@ public class AddNewUser extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new AddNewUser().setVisible(true));
+         java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                AddNewUser dialog = new AddNewUser(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -220,7 +236,38 @@ public class AddNewUser extends javax.swing.JFrame {
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
-    private void simpanData() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+   private void simpanData() {
+        try {
+            String nama = txtNama.getText();
+            String jabatan = cmbJabatan.getSelectedItem().toString();
+            String username = txtUsername.getText();
+            String password = new String(txtPassword.getPassword());
+            
+            Connection K = koneksi.Go();
+            String sql = "INSERT INTO pegawai "
+                    + "(nama_pegawai,jabatan,username,password_hash) "
+                    + "VALUES "
+                    + "(?,?,?,?)";
+            PreparedStatement PS = K.prepareStatement(sql);
+            PS.setString(1, nama);
+            PS.setString(2, jabatan);
+            PS.setString(3, username);
+            PS.setString(4, password);
+            PS.executeUpdate();
+            
+            KelolaUser.refreshData();
+            this.setVisible(false); 
+            
+            JOptionPane.showMessageDialog(null, "Data berhasil disimpan");
+            
+            
+        } catch (Exception e) {
+            //error handling
+            System.err.println(""
+                    + "Lokasi: "+getClass()+""
+                    + "Method: @simpanData()"
+                    + "Error: "+e.getMessage());
+        }
     }
 }
+
