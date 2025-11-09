@@ -4,6 +4,8 @@
  */
 package motorin.panel;
 
+import Dialog.AddNewProduct;
+
 /**
  *
  * @author Lenovo

@@ -3,7 +3,7 @@ package motorindong;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import javax.swing.JPanel;
-import motorin.panel.Kelolaproduct;
+import motorin.panel.KelolaProducts;
 import motorin.panel.KelolaUser;
 import com.motorin.db.pegawai;
 
