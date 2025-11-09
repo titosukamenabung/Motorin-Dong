@@ -10,12 +10,16 @@ import Dialog.AddNewProduct;
  *
  * @author Lenovo
  */
-public class KelolaProducts extends javax.swing.JPanel {
+public class KelolaProduct extends javax.swing.JPanel {
+
+    public static void refreshData(String string) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
     /**
      * Creates new form KelolaProducts
      */
-    public KelolaProducts() {
+    public KelolaProduct() {
         initComponents();
     }
 
