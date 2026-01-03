@@ -13,6 +13,7 @@ public class Products {
     private String harga_jual;
     private String satuan;
     private String tanggal_masuk;
+    private String gambar;
 
     public int getId_barang() {
         return id_barang;
@@ -76,6 +77,14 @@ public class Products {
 
     public void setTanggal_masuk(String tanggal_masuk) {
         this.tanggal_masuk = tanggal_masuk;
+    }
+    
+    public String getGambar() {
+        return gambar;
+    }
+    
+    public void setGambar(String gambar){
+        this.gambar = gambar;
     }
     
 }
