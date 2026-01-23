@@ -180,37 +180,45 @@ public class EditUser extends javax.swing.JDialog {
 
     private void ubahDataUser() {
        
-        try {
-            String nama = txtNama.getText();
-            String jabatan = cmbJabatan.getSelectedItem().toString();
-            String username = txtUsername.getText();
-            String password = new String(txtPassword.getPassword());
-            
-            Connection K = koneksi.Go();
-            String Q = "UPDATE pegawai SET "
-                    + "nama=?, "
-                    + "username=?, "
-                    + "password=?, "
-                    + "jabatan=? "
-                    + "WHERE id_pegawai=?";
-            PreparedStatement PS = K.prepareStatement(Q);
-            PS.setString(1, nama);
-            PS.setString(2, jabatan);
-            PS.setString(3, username);
-            PS.setString(4, password);
-            PS.setInt(5, P.getId());
-            PS.executeUpdate();
-            
-            KelolaUsers.refreshData("");
-            this.setVisible(false); 
-            
-            JOptionPane.showMessageDialog(null, "Data berhasil diubah"); 
-            
-        } catch (HeadlessException | SQLException e) {
-            //error handling
+    try {
+        // 1. Ambil data dari inputan
+        String nama = txtNama.getText();
+        String jabatan = cmbJabatan.getSelectedItem().toString();
+        String username = txtUsername.getText();
+        String password = new String(txtPassword.getPassword());
+        
+        // 2. Koneksi ke database
+        Connection K = koneksi.Go();
+        
+        // 3. Query dengan urutan: 1.nama, 2.username, 3.password, 4.jabatan, 5.id
+        String Q = "UPDATE pegawai SET nama=?, username=?, password=?, jabatan=? WHERE id_pegawai=?";
+        
+        PreparedStatement PS = K.prepareStatement(Q);
+        
+        // 4. MENGISI PARAMETER (HARUS BERURUTAN!)
+        PS.setString(1, nama);     // Sesuai nama=?
+        PS.setString(2, username); // Sesuai username=? (Sebelumnya Anda isi jabatan)
+        PS.setString(3, password); // Sesuai password=? (Sebelumnya Anda isi username)
+        PS.setString(4, jabatan);  // Sesuai jabatan=?  (Sebelumnya Anda isi password)
+        PS.setInt(5, P.getId());   // Sesuai WHERE id_pegawai=?
+        
+        // 5. Eksekusi
+        int hasil = PS.executeUpdate();
+        
+        if (hasil > 0) {
+            JOptionPane.showMessageDialog(this, "Data berhasil diperbarui!");
+            KelolaUsers.refreshData(""); // Memperbarui tabel di frame utama
+            this.dispose();              // Menutup dialog edit
         }
-    }
-}
-
+        
+    } catch (SQLException e) {
+        // Tampilkan error agar Anda tahu masalahnya (misal: kolom database tidak pas)
+        JOptionPane.showMessageDialog(this, "Gagal Update: " + e.getMessage());
     
-
+} catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.toString());
+    }
+    
+    }
+    
+}

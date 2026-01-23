@@ -303,37 +303,43 @@ public class ManageProducts extends javax.swing.JPanel {
 
 public static void refreshDataProducts(String w) {
         try {
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            for (int i = model.getRowCount() - 1; i >= 0; i--) {
-                model.removeRow(i);
-            }
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        // Membersihkan tabel sebelum diisi ulang
+        model.setRowCount(0);
 
-            Connection K = koneksi.Go();
-            String Q = "SELECT * FROM motorindong " + w;
-            Statement S = K.createStatement();
-            ResultSet R = S.executeQuery(Q);
-            while (R.next()) {
-                String id = R.getString("id_barang");
-                String nama_barang = R.getString("nama_barang");
-                String kategori = R.getString("kategori");
-                String stok = R.getString("stok");
-                String harga_beli = R.getString("harga_beli");
-                double harga_jual = R.getDouble("harga_jual");
-                double satuan = R.getDouble("satuan");
-                String tanggal_masuk = R.getString("tanggal_masuk");
-                
-                String vBeli = String.format("%.0f", harga_beli);
-                String vJual = String.format("%.0f", harga_jual);
-                
-                Object[] dataProduct = {id, nama_barang, kategori, stok, vBeli, vJual, satuan, tanggal_masuk};
-                model.addRow(dataProduct);
-            }
+        Connection K = koneksi.Go();
+        // PERBAIKAN: Nama tabel diganti menjadi 'barang'
+        String Q = "SELECT * FROM barang " + w; 
+        Statement S = K.createStatement();
+        ResultSet R = S.executeQuery(Q);
 
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+        while (R.next()) {
+            String id = R.getString("id_barang");
+            String nama_barang = R.getString("nama_barang");
+            String kategori = R.getString("kategori");
+            String stok = R.getString("stok");
             
+            // Ambil harga sebagai Double agar bisa diformat
+            double harga_beli = R.getDouble("harga_beli");
+            double harga_jual = R.getDouble("harga_jual");
+            
+            // PERBAIKAN: Satuan diambil sebagai String (bukan Double)
+            String satuan = R.getString("satuan"); 
+            String tanggal_masuk = R.getString("tanggal_masuk");
+            
+            // Format angka agar tidak muncul .0 di belakangnya
+            String vBeli = String.format("%.0f", harga_beli);
+            String vJual = String.format("%.0f", harga_jual);
+            
+            Object[] dataProduct = {id, nama_barang, kategori, stok, vBeli, vJual, satuan, tanggal_masuk};
+            model.addRow(dataProduct);
         }
+
+    } catch (Exception e) {
+        // Ini akan membantu Anda melihat pesan error di Output NetBeans
+        System.err.println("Error Refresh Tabel: " + e.getMessage());
     }
+}
     private void searchDataProducts() {
         String key = txtSearch.getText();
         String where = " WHERE " 

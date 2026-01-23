@@ -266,6 +266,7 @@ public class TotalLaba extends javax.swing.JPanel {
 
             // E. Masukkan ke Tabel (Urutan: No, Tanggal, Nama Barang, Modal, Harga Jual, Qty, Laba)
             model.addRow(new Object[]{ no++, tanggal, barang, vModal, vJual, qty, vUntung });
+            }
     }   catch (Exception e) {
         // Blok catch ini WAJIB ada agar try tidak error
         e.printStackTrace();
@@ -280,4 +281,4 @@ public class TotalLaba extends javax.swing.JPanel {
 
     }
 
-}
+

@@ -1,7 +1,7 @@
 
 package motorindong;
 
-import Bmj.dialogs.Profile;
+import Dialog.Profile;
 import motorin.panel.LaporanHarian;
 import motorin.panel.ManageProducts;
 import com.motorin.db.pegawai;

@@ -22,7 +22,6 @@ import javax.swing.table.DefaultTableModel;
 public class Transaksi extends javax.swing.JPanel {
     
     javax.swing.table.DefaultTableModel model;
-    DefaultTableModel model;
     int totalBelanja = 0;
     int stokSisa = 0;
  
@@ -669,23 +668,6 @@ public class Transaksi extends javax.swing.JPanel {
         txtIDTransaksi.setEnabled(false);
     }
     
-    public void tampilkanBarang(){
-        try {
-            java.sql.Connection conn = com.motorin.db.koneksi.Go();
-            java.sql.Statement stm = conn.createStatement();
-            
-            java.sql.ResultSet res = stm.executeQuery("SELECT id_barang FROM barang");
-            
-            cmbKode.removeAllItems();
-            cmbKode.addItem("--Pilih--");
-            
-            while (res.next()){
-                cmbKode.addItem(res.getString("id_motor"));
-            }
-        } catch (Exception e) {
-            System.out.println("Gagal menampilkan barang:" + e.getMessage());
-        }
-    }
 
     private void simpanTransaksi() {
         // 1. CEK KERANJANG
@@ -727,7 +709,7 @@ public class Transaksi extends javax.swing.JPanel {
         String tanggal = f.format(new java.util.Date());
 
         try {
-            java.sql.Connection conn = Bmj.util.Koneksi.Go();
+            java.sql.Connection conn = com.motorin.db.koneksi.Go();
 
             // --- TAHAP A: SIMPAN DATA TRANSAKSI ---
             String sqlHeader = "INSERT INTO transaksi (id_transaksi, nama_pelanggan, alamat_pelanggan, nama_pegawai, tanggal, total_harga) VALUES (?, ?, ?, ?, ?, ?)";
@@ -786,7 +768,7 @@ public class Transaksi extends javax.swing.JPanel {
             // --- TAHAP D: BERHASIL & RESET ---
             javax.swing.JOptionPane.showMessageDialog(this, "Transaksi Berhasil! Status: " + status);
             
-            Bmj.util.Struk.cetak(
+            com.motorin.db.Struk.cetak(
                     txtIDTransaksi.getText(), // Kirim ID
                     txtNamaPelanggan.getText(), // Kirim Nama
                     txtAlamat.getText(), // Kirim Alamat
@@ -836,7 +818,7 @@ public class Transaksi extends javax.swing.JPanel {
            }
             
             String kode = (String) cmbKode.getSelectedItem();
-            String nama_barang = txtnama_barang.getText();
+            String nama_barang = txtMerk.getText();
             String tipe = txtTipe.getText();
             
             int harga = Integer.parseInt(txtHarga.getText());
@@ -855,7 +837,7 @@ public class Transaksi extends javax.swing.JPanel {
             int subtotal = Integer.parseInt(txtSubtotal.getText());
             
      
-            model.addRow(new Object[]{kode, merk, tipe, harga, jumlah, subtotal});
+            model.addRow(new Object[]{kode, txtMerk, tipe, harga, jumlah, subtotal});
             
             totalBelanja += subtotal;
             
@@ -879,13 +861,13 @@ public class Transaksi extends javax.swing.JPanel {
         String kode = (String) cmbKode.getSelectedItem();
         
         if(kode == null || kode.equals("--Pilih--")){
-            txtnama_barang.setText("");
+            txtMerk.setText("");
             txtTipe.setText("");
-            txtharga_jual.setText("");
+            txtHarga.setText("");
             return;
         }
         try {
-            java.sql.Connection conn = Bmj.util.Koneksi.Go();
+            java.sql.Connection conn = com.motorin.db.koneksi.Go();
             java.sql.Statement stm = conn.createStatement();
             
             String sql = "SELECT * FROM motor WHERE id_motor = '" + kode +"'";

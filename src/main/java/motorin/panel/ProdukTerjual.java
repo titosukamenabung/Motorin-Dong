@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Adies
+ * @author Tito
  */
 public class ProdukTerjual extends javax.swing.JPanel {
      Products Pm;
@@ -106,6 +106,10 @@ public class ProdukTerjual extends javax.swing.JPanel {
             String harga_jual = jTable1.getValueAt(n, 5).toString(); // Variabel h_jual
             String satuan = jTable1.getValueAt(n, 6).toString();
             String tgl = jTable1.getValueAt(n, 7).toString();
+            
+            String cleanHargaBeli = harga_beli.replace("Rp", "").replace(".", "").trim();
+            String cleanHargaJual = harga_jual.replace("Rp", "").replace(".", "").trim();
+
 
             // Memasukkan data ke objek Pm (Products)
             Pm.setId_barang(Integer.parseInt(id));
@@ -113,15 +117,17 @@ public class ProdukTerjual extends javax.swing.JPanel {
             Pm.setKategori(kategori);
             Pm.setStok(stok);
             // Perbaikan: gunakan h_beli dan h_jual agar tidak error
-            Pm.setHarga_beli(Double.parseDouble(h_beli));
-            Pm.setHarga_jual(Double.parseDouble(h_jual)); 
+            Pm.setHarga_beli(Double.parseDouble(cleanHargaBeli) + "");
+            Pm.setHarga_jual(Double.parseDouble(cleanHargaJual) + "");
+
+
             Pm.setSatuan(satuan);
             Pm.setTanggal_masuk(tgl);
             
             
             
             try {
-                java.sql.Connection K = Bmj.util.Koneksi.Go();
+                java.sql.Connection K = com.motorin.db.koneksi.Go();
                 java.sql.Statement S = K.createStatement();
                 
                 // Cari nama gambar berdasarkan ID
