@@ -52,16 +52,16 @@ public class DashboardManajer extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     
     
-    public void updateInfo() {
-        if (P != null) {
-            // Jika kamu ada label nama di design, buka komentar di bawah:
-            // lblNamaManajer.setText("Manajer: " + P.getNama());
-            
-            System.out.println("Berhasil Login Sebagai: " + P.getNama());
-        } else {
-            System.out.println("Data Pegawai Kosong (Null)");
-        }
+   public void updateInfo() {
+    if (P != null) {
+        // TAMBAHKAN BARIS INI:
+        jLabel2.setText(P.getNama()); 
+        
+        System.out.println("Berhasil Login Sebagai: " + P.getNama());
+    } else {
+        System.out.println("Data Pegawai Kosong (Null)");
     }
+}
     
     private void AddViews(JPanel panel) {
         panelContent.removeAll(); // Menghapus isi panel tengah sebelumnya

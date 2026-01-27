@@ -79,7 +79,7 @@ public class DashboardKasir extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 3, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 102, 255));
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("DASHBOARD");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -89,7 +89,7 @@ public class DashboardKasir extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1362, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1419, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(97, 97, 97)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -120,8 +120,9 @@ public class DashboardKasir extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 153, 255), 3));
 
+        btnTransaksi.setBackground(new java.awt.Color(255, 0, 0));
         btnTransaksi.setFont(new java.awt.Font("Dialog", 3, 24)); // NOI18N
-        btnTransaksi.setForeground(new java.awt.Color(0, 102, 255));
+        btnTransaksi.setForeground(new java.awt.Color(0, 0, 0));
         btnTransaksi.setText("Transaksi");
         btnTransaksi.setBorder(null);
         btnTransaksi.addActionListener(new java.awt.event.ActionListener() {
@@ -130,8 +131,9 @@ public class DashboardKasir extends javax.swing.JFrame {
             }
         });
 
+        btnLaporanHarian.setBackground(new java.awt.Color(255, 0, 0));
         btnLaporanHarian.setFont(new java.awt.Font("Dialog", 3, 24)); // NOI18N
-        btnLaporanHarian.setForeground(new java.awt.Color(0, 102, 255));
+        btnLaporanHarian.setForeground(new java.awt.Color(0, 0, 0));
         btnLaporanHarian.setText("Laporan Harian");
         btnLaporanHarian.setBorder(null);
         btnLaporanHarian.addActionListener(new java.awt.event.ActionListener() {
@@ -140,8 +142,9 @@ public class DashboardKasir extends javax.swing.JFrame {
             }
         });
 
+        btnRiwayatTransaksi.setBackground(new java.awt.Color(255, 0, 0));
         btnRiwayatTransaksi.setFont(new java.awt.Font("Dialog", 3, 24)); // NOI18N
-        btnRiwayatTransaksi.setForeground(new java.awt.Color(0, 102, 255));
+        btnRiwayatTransaksi.setForeground(new java.awt.Color(0, 0, 0));
         btnRiwayatTransaksi.setText("Riwayat Transaksi");
         btnRiwayatTransaksi.setBorder(null);
         btnRiwayatTransaksi.addActionListener(new java.awt.event.ActionListener() {
@@ -183,7 +186,7 @@ public class DashboardKasir extends javax.swing.JFrame {
         panelContent.setForeground(new java.awt.Color(102, 153, 255));
         panelContent.setLayout(new java.awt.BorderLayout());
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Desain tanpa judul (2).png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/backgroun_dashboard.jpg"))); // NOI18N
         panelContent.add(jLabel4, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(panelContent, java.awt.BorderLayout.CENTER);

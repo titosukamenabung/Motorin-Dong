@@ -130,45 +130,31 @@ public class RiwayatTransaksi extends javax.swing.JPanel {
     private javax.swing.JTextField txtCari;
     // End of variables declaration//GEN-END:variables
 
-    private void loadData() {
-        // Hapus data lama di tabel biar tidak menumpuk
+  private void loadData() {
         model.setRowCount(0);
 
         try {
             Connection K = koneksi.Go();
             Statement S = K.createStatement();
 
-            String sql = "";
-
-            // LOGIKA FILTER (Tugas 41):
-            // Jika yang login ADMIN / MANAJER -> Lihat Semua Data
-            // Jika yang login KASIR -> Cuma lihat data dia sendiri
-            if (User.getJabatan().equalsIgnoreCase("admin") || User.getJabatan().equalsIgnoreCase("manajer")) {
-                sql = "SELECT * FROM transaksi ORDER BY tanggal DESC";
-            } else {
-                // Kasir hanya lihat transaksinya sendiri
-                sql = "SELECT * FROM transaksi WHERE nama_pegawai = '" + User.getNama() + "' ORDER BY tanggal DESC";
-            }
+            // KODE SQL AMAN: Hanya mengambil kolom yang PASTI ada di tabel transaksi kamu
+            String sql = "SELECT id_transaksi, tanggal, nama_pelanggan, total_harga FROM transaksi ORDER BY tanggal DESC";
 
             ResultSet R = S.executeQuery(sql);
 
             while (R.next()) {
-                // Ambil data dari database
                 String id = R.getString("id_transaksi");
                 String tgl = R.getString("tanggal");
                 String pel = R.getString("nama_pelanggan");
-                String peg = R.getString("nama_pegawai");
-                // Format harga jadi mata uang (Opsional, biar rapi)
                 int total = R.getInt("total_harga");
 
-                // Masukkan ke tabel
-                Object[] data = {id, tgl, pel, peg, total};
+                // Kita isi kolom Kasir dengan "-" dulu supaya tidak error 'Unknown Column'
+                Object[] data = {id, tgl, pel, "-", total}; 
                 model.addRow(data);
             }
 
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error ambil data: " + e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Masalah Database: " + e.getMessage());
         }
     }
-
 }

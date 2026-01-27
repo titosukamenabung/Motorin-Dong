@@ -208,77 +208,59 @@ public class TotalLaba extends javax.swing.JPanel {
 
     // Method untuk Menghitung Cuan
     private void tampilkanLaba() {
-        // 1. Siapkan Model Tabel
-        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0); // Bersihkan tabel
+    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0); 
 
-        // 2. Format Tanggal dari DateChooser
-        java.util.Date date1 = (java.util.Date) spinnerMulai.getValue();
-        java.util.Date date2 = (java.util.Date) spinnerSampai.getValue();
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-        String tgl1 = sdf.format(date1);
-        String tgl2 = sdf.format(date2);
+    java.util.Date date1 = (java.util.Date) spinnerMulai.getValue();
+    java.util.Date date2 = (java.util.Date) spinnerSampai.getValue();
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+    String tgl1 = sdf.format(date1);
+    String tgl2 = sdf.format(date2);
 
-        double totalSeluruhCuan = 0; 
+    double totalSeluruhCuan = 0; 
 
-        try {
-            // 3. QUERY SAKTI 3 TABEL (Transaksi + Detail + barang)
-            String sql = "SELECT t.tanggal, b.nama_barang, b.kategori, b.harga_beli, d.jumlah, d.subtotal "
-                    + "FROM transaksi t "
-                    + "JOIN detail_transaksi d ON t.id_transaksi = d.id_transaksi "
-                    + "JOIN barang b ON d.id_barang = b.id_barang "
-                    + "WHERE t.tanggal BETWEEN '" + tgl1 + "' AND '" + tgl2 + "'";
+    try {
+        // QUERY JOIN 3 TABEL: Menghubungkan Transaksi, Detail, dan Barang
+        String sql = "SELECT t.tanggal, b.nama_barang, b.harga_beli, b.harga AS harga_jual, dt.jumlah "
+                   + "FROM detail_transaksi dt "
+                   + "JOIN transaksi t ON dt.id_transaksi = t.id_transaksi "
+                   + "JOIN barang b ON dt.id_barang = b.id_barang "
+                   + "WHERE t.tanggal BETWEEN '" + tgl1 + "' AND '" + tgl2 + "'";
 
-            java.sql.Connection conn = com.motorin.db.koneksi.Go();
-            java.sql.Statement stm = conn.createStatement();
-            java.sql.ResultSet res = stm.executeQuery(sql);
+        java.sql.Connection conn = com.motorin.db.koneksi.Go();
+        java.sql.Statement stm = conn.createStatement();
+        java.sql.ResultSet res = stm.executeQuery(sql);
 
-            int no = 1;
-
-            while (res.next()) {
-            // A. Ambil Data - Sesuaikan dengan kolom database Anda
+        int no = 1;
+        while (res.next()) {
             String tanggal = res.getString("tanggal");
+            String barang  = res.getString("nama_barang");
+            int qty        = res.getInt("jumlah"); 
+            double modal   = res.getDouble("harga_beli"); // Modal per unit
+            double jual    = res.getDouble("harga_jual"); // Harga jual per unit
 
-            // Gabungkan nama_barang dan kategori sebagai pengganti merk + tipe
-            String barang = res.getString("nama_barang") + " (" + res.getString("kategori") + ")";
+            // RUMUS LABA: (Harga Jual - Modal) * Jumlah Beli
+            double labaPerBaris = (jual - modal) * qty;
+            totalSeluruhCuan += labaPerBaris;
 
-            // Ambil jumlah beli dari detail_transaksi
-            int qty = res.getInt("jumlah"); 
+            model.addRow(new Object[]{
+                no++, 
+                tanggal, 
+                barang, 
+                String.format("Rp %,.0f", modal), 
+                String.format("Rp %,.0f", jual), 
+                qty, 
+                String.format("Rp %,.0f", labaPerBaris)
+            });
+        }
+        
+        lblTotalLaba.setText(String.format("Rp %,.0f", totalSeluruhCuan));
 
-            // Ambil modal dari kolom harga_beli
-            double modalSatuan = res.getDouble("harga_beli");
-
-            // Subtotal adalah total bayar untuk barang tersebut (Harga Jual * Qty)
-            double totalJual = res.getDouble("subtotal"); 
-
-            // B. HITUNG KEUNTUNGAN (CUAN)
-            // Modal dikali jumlah barang yang terjual
-            double totalModal = modalSatuan * qty; 
-            double keuntungan = totalJual - totalModal;
-
-            // C. Tambahkan ke Total Keseluruhan
-            totalSeluruhCuan += keuntungan;
-
-            // D. Format Rupiah agar tampilan rapi
-            String vModal  = String.format("Rp %,.0f", modalSatuan).replace(',', '.');
-            String vJual   = String.format("Rp %,.0f", totalJual).replace(',', '.');
-            String vUntung = String.format("Rp %,.0f", keuntungan).replace(',', '.');
-
-            // E. Masukkan ke Tabel (Urutan: No, Tanggal, Nama Barang, Modal, Harga Jual, Qty, Laba)
-            model.addRow(new Object[]{ no++, tanggal, barang, vModal, vJual, qty, vUntung });
-            }
-    }   catch (Exception e) {
-        // Blok catch ini WAJIB ada agar try tidak error
-        e.printStackTrace();
+    } catch (Exception e) {
         javax.swing.JOptionPane.showMessageDialog(this, "Error Laba: " + e.getMessage());
-        }
-    
-            
-
-        // 4. Tampilkan Total Keuntungan pada Label
-        lblTotalLaba.setText(String.format("Rp %,.0f", totalSeluruhCuan).replace(',', '.'));
-        }
-
     }
+}
+    
+}
 
 

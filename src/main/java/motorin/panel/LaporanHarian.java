@@ -27,6 +27,22 @@ public class LaporanHarian extends javax.swing.JPanel {
         
         tampilkanTanggal();
         loadData();
+
+        // TAMBAHKAN KODE AMAN INI:
+        try {
+            // Kita cek jabatan secara aman. Jika null, maka dianggap bukan manager.
+            String jabatan = "";
+            if (com.motorin.db.User.getJabatan() != null) {
+                jabatan = com.motorin.db.User.getJabatan();
+            }
+
+            if (!jabatan.equalsIgnoreCase("MANAJER")) {
+                jPanel2.setVisible(false); // Sembunyikan panel omzet jika bukan manager
+            }
+        } catch (Exception e) {
+            // Jika error jabatan null, diamkan saja agar aplikasi tidak pop-up error
+            jPanel2.setVisible(false);
+        }
     }
 
     /**
@@ -111,13 +127,13 @@ public class LaporanHarian extends javax.swing.JPanel {
 
         tabelLaporan.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Id_penjualan", "Produk", "Qty", "Harga", "Subtotal"
             }
         ));
         jScrollPane1.setViewportView(tabelLaporan);
@@ -216,47 +232,35 @@ public class LaporanHarian extends javax.swing.JPanel {
         txtTanggal.setText(f.format(date));
     }
 
-    private void loadData() {
-        model.setRowCount(0);
+   private void loadData() {
+    model.setRowCount(0);
+    String tgl = txtTanggal.getText();
+    
+    try {
+        java.sql.Connection conn = com.motorin.db.koneksi.Go();
+        // Query ini hanya mengambil data transaksi, tidak peduli siapa yang login
+        String sql = "SELECT t.id_transaksi, t.nama_pelanggan, t.alamat_pelanggan, t.tanggal, t.total_harga, p.status " +
+                     "FROM transaksi t " +
+                     "JOIN pembayaran p ON t.id_transaksi = p.id_transaksi " +
+                     "WHERE t.tanggal = ?";
         
-        String tanggalcari = txtTanggal.getText();
-        long totalOmzet = 0;
+        java.sql.PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, tgl);
+        java.sql.ResultSet rs = pst.executeQuery();
         
-        try {
-            java.sql.Connection conn = com.motorin.db.koneksi.Go();
-            
-            String sql = "SELECT t.id_transaksi, t.nama_pelanggan, t.alamat_pelanggan, t.tanggal, t.total_harga, p.status " +
-                         "FROM transaksi t " +
-                         "JOIN pembayaran p ON t.id_transaksi = p.id_transaksi " +
-                         "WHERE t.tanggal = ?";
-            
-            java.sql.PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setString(1, tanggalcari);
-           java.sql.ResultSet rs = pst.executeQuery();
-           
-           while (rs.next()){
-               String id = rs.getString("id_transaksi");
-               String nama = rs.getString("nama_pelanggan");
-               String alamat = rs.getString("alamat_pelanggan");
-               String tgl = rs.getString("tanggal");
-               long total = rs.getLong("total_harga");
-               String status = rs.getString("status");
-               
-               Object[] data = {id, nama, alamat, tgl, total, status};
-               model.addRow(data);
-               
-               totalOmzet += total;
-           }
-           
-           java.text.NumberFormat kurs = java.text.NumberFormat.getCurrencyInstance(new java.util.Locale("id", "ID"));
-           lblTotal.setText("Total Omzet: " + kurs.format(totalOmzet));
-                    
-                   
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Gagal Load Data: " + e.getMessage());
+        while (rs.next()){
+            Object[] data = {
+                rs.getString("id_transaksi"),
+                rs.getString("nama_pelanggan"),
+                rs.getString("alamat_pelanggan"),
+                rs.getLong("total_harga"),
+                rs.getString("status")
+            };
+            model.addRow(data);
         }
-       
+    } catch (Exception e) {
+        // Pesan ini akan muncul kalau ada yang salah
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
-    
-    
+   }
 }

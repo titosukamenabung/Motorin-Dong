@@ -54,13 +54,13 @@ public class KinerjaKasir extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "No", "Kasir", "Transaksi", "Item", "Pendapatan"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -139,62 +139,63 @@ public class KinerjaKasir extends javax.swing.JPanel {
     private javax.swing.JSpinner spinnersampai;
     // End of variables declaration//GEN-END:variables
 
-    private void loadDataKinerja() {
-        try {
-            // 1. Ambil Tanggal dari Spinner
-            java.util.Date date1 = (java.util.Date) spinnermulai.getValue();
-            java.util.Date date2 = (java.util.Date) spinnersampai.getValue();
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            String tgl1 = sdf.format(date1);
-            String tgl2 = sdf.format(date2);
+   private void loadDataKinerja() {
+    try {
+        // 1. Ambil Tanggal dari Spinner
+        java.util.Date date1 = (java.util.Date) spinnermulai.getValue();
+        java.util.Date date2 = (java.util.Date) spinnersampai.getValue();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        String tgl1 = sdf.format(date1);
+        String tgl2 = sdf.format(date2);
 
-            // 2. Bersihkan Tabel Lama
-            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0);
+        // 2. Bersihkan Tabel
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
 
-            // 3. Siapkan Koneksi
-            java.sql.Connection K = com.motorin.db.koneksi.Go();
-            java.sql.Statement S = K.createStatement();
+        // 3. Siapkan Koneksi
+        java.sql.Connection K = com.motorin.db.koneksi.Go();
+        
+        // 4. QUERY JOIN (Transaksi + Detail) untuk menghitung jumlah ITEM per kasir
+        String sql = "SELECT t.nama_pegawai, "
+                   + "COUNT(DISTINCT t.id_transaksi) as jum_transaksi, " 
+                   + "SUM(dt.jumlah) as total_item, " 
+                   + "SUM(t.total_harga) as tot_uang " 
+                   + "FROM transaksi t "
+                   + "JOIN detail_transaksi dt ON t.id_transaksi = dt.id_transaksi "
+                   + "WHERE t.tanggal BETWEEN '" + tgl1 + "' AND '" + tgl2 + "' " 
+                   + "GROUP BY t.nama_pegawai "
+                   + "ORDER BY tot_uang DESC";
 
-            // 4. QUERY SAKTI KINERJA KASIR
-            // - COUNT(id_transaksi): Hitung jumlah struk/transaksi
-            // - SUM(total_harga): Hitung total duit/omset
-            // - GROUP BY nama_pegawai: Kelompokkan per nama orang
-            String sql = "SELECT nama_pegawai, "
-                       + "COUNT(id_transaksi) as jum_transaksi, " 
-                       + "SUM(total_harga) as tot_uang " 
-                       + "FROM transaksi " 
-                       + "WHERE tanggal BETWEEN '" + tgl1 + "' AND '" + tgl2 + "' " 
-                       + "GROUP BY nama_pegawai "
-                       + "ORDER BY tot_uang DESC";
+        java.sql.ResultSet R = K.createStatement().executeQuery(sql);
 
-            java.sql.ResultSet R = S.executeQuery(sql);
-
-            // 5. Masukkan Data ke Tabel
-            int no = 1;
-            while (R.next()) {
-                String nama = R.getString("nama_pegawai");
-                
-                // Ambil Jumlah Transaksi
-                String jumlahJual = R.getString("jum_transaksi"); 
-                
-                // Ambil Total Uang & Format jadi Rupiah
-                double duit = R.getDouble("tot_uang");
-                String duitStr = String.format("Rp %,.0f", duit).replace(',', '.');
-
-                // Masukkan ke baris tabel (Sesuai urutan kolom desain)
-                Object[] data = {no++, nama, jumlahJual + " Transaksi", duitStr};
-                model.addRow(data);
-            }
+        // 5. Masukkan Data ke Tabel
+        int no = 1;
+        while (R.next()) {
+            String nama = R.getString("nama_pegawai");
+            int jumTrx = R.getInt("jum_transaksi");
+            int totItem = R.getInt("total_item"); // Kolom baru untuk "Item"
+            double duit = R.getDouble("tot_uang");
             
-            // Cek jika kosong
-            if (model.getRowCount() == 0) {
-                 javax.swing.JOptionPane.showMessageDialog(this, "Tidak ada data transaksi di periode ini.");
-            }
-            
-        } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            String duitStr = String.format("Rp %,.0f", duit).replace(',', '.');
+
+            // Masukkan 5 data agar sesuai dengan 5 kolom di desain tabel
+            Object[] data = {
+                no++, 
+                nama, 
+                jumTrx + " Trx", 
+                totItem + " Pcs", // Data untuk kolom "Item"
+                duitStr
+            };
+            model.addRow(data);
         }
+        
+        if (model.getRowCount() == 0) {
+             javax.swing.JOptionPane.showMessageDialog(this, "Data tidak ditemukan.");
+        }
+        
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }
-
+}
+   
 }

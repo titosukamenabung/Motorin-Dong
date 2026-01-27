@@ -63,5 +63,9 @@ public class User {
     public static String getpassword(){
         return password;
     }
+
+    public static int getId_pegawai() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

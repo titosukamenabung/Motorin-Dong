@@ -23,7 +23,7 @@ public class ProdukTerjual extends javax.swing.JPanel {
      */
     public ProdukTerjual() {
         initComponents();
-        refreshDataproducts("");
+        refreshDataProducts("");
     }
 
     /**
@@ -42,13 +42,13 @@ public class ProdukTerjual extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "id_motor", "merk", "tipe", "tahun", "warna", "harga", "stok"
+                "Id barang", "Nama Barang", "Kategori ", "Harga ", "Stok"
             }
         ));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -169,27 +169,20 @@ public class ProdukTerjual extends javax.swing.JPanel {
             ResultSet R = S.executeQuery(Q);
 
             while (R.next()) {
-                // Ambil data sesuai nama kolom di database Anda
-                String id = R.getString("id_barang");
-                String nama = R.getString("nama_barang");
-                String kategori = R.getString("kategori");
-                String stok = R.getString("stok");
+    // Ambil data sesuai kolom yang ada di database 'barang'
+    String id = R.getString("id_barang");
+    String nama = R.getString("nama_barang");
+    String kategori = R.getString("kategori");
+    double harga = R.getDouble("harga"); // Database kamu hanya ada kolom 'harga'
+    String stok = R.getString("stok");
 
-                // Ambil harga sebagai angka agar bisa diformat rapi
-                double h_beli = R.getDouble("harga_beli");
-                double h_jual = R.getDouble("harga_jual");
+    // Format harga agar rapi (menghilangkan desimal)
+    String vHarga = String.format("%.0f", harga);
 
-                String satuan = R.getString("satuan"); 
-                String tgl = R.getString("tanggal_masuk");
-
-                // Format angka (menghilangkan .00)
-                String vBeli = String.format("%.0f", h_beli);
-                String vJual = String.format("%.0f", h_jual);
-
-                // Masukkan ke array sesuai urutan kolom JTable Anda
-                Object[] databarang = {id, nama, kategori, stok, vBeli, vJual, satuan, tgl};
-                model.addRow(databarang);
-            }
+    // MASUKKAN HANYA 5 DATA (SESUAI DESAIN TABEL KAMU)
+    Object[] databarang = {id, nama, kategori, vHarga, stok};
+    model.addRow(databarang);
+}
 
         } catch (Exception e) {
             // Agar error terlihat di console NetBeans jika ada masalah
@@ -199,10 +192,5 @@ public class ProdukTerjual extends javax.swing.JPanel {
             
         }
     }
-
-    private void refreshDataproducts(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
 
 }

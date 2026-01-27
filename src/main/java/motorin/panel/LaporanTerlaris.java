@@ -162,68 +162,63 @@ public class LaporanTerlaris extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void loadDataTerlaris() {
-        try {
-            // 1. Ambil Tanggal dari Spinner
-            java.util.Date date1 = (java.util.Date) spinnerMulai.getValue();
-            java.util.Date date2 = (java.util.Date) spinnerSampai.getValue();
-            
-            // 2. Format Tanggal
-            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-            String tgl1 = sdf.format(date1);
-            String tgl2 = sdf.format(date2);
+    try {
+        // 1. Ambil tanggal dari spinner
+        java.util.Date mulai = (java.util.Date) spinnerMulai.getValue();
+        java.util.Date sampai = (java.util.Date) spinnerSampai.getValue();
 
-            // 3. Reset Tabel
-            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0);
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        String tglMulai = sdf.format(mulai);
+        String tglSampai = sdf.format(sampai);
 
-            // 4. Koneksi & Query
-            java.sql.Connection K = com.motorin.db.koneksi.Go();
-            java.sql.Statement S = K.createStatement();
+        // 2. Reset tabel
+        javax.swing.table.DefaultTableModel model =
+                (javax.swing.table.DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
 
-            // Query: Gabung tabel barang -> Hitung Total Qty -> Filter Tanggal -> Urutkan Terlaris
-            String sql = "SELECT b.nama_barang, b.kategori, "
-                       + "SUM(dt.jumlah) as total_qty, "
-                       + "SUM(dt.subtotal) as total_uang " 
-                       + "FROM detail_transaksi dt " 
-                       + "JOIN transaksi t ON t.id_transaksi = dt.id_transaksi " 
-                       + "JOIN barang b ON b.id_barang = dt.id_barang " // Sesuaikan ke tabel barang
-                       + "WHERE t.tanggal BETWEEN '" + tgl1 + "' AND '" + tgl2 + "' " 
-                       + "GROUP BY b.id_barang " // Group berdasarkan id_barang
-                       + "ORDER BY total_qty DESC";// DESC = Besar ke Kecil
+        // 3. Koneksi database
+        java.sql.Connection con = com.motorin.db.koneksi.Go();
 
-            java.sql.ResultSet R = S.executeQuery(sql);
+        // 4. SQL Produk Terlaris
+        String sql =
+            "SELECT b.nama_barang, b.kategori, " +
+            "SUM(t.jumlah) AS total_qty, " +
+            "SUM(t.total_harga) AS total_pendapatan " +
+            "FROM transaksi t " +
+            "JOIN barang b ON b.id_barang = t.id_barang " +
+            "WHERE t.tanggal BETWEEN ? AND ? " +
+            "GROUP BY b.id_barang, b.nama_barang, b.kategori " +
+            "ORDER BY total_qty DESC";
 
-            // 5. Isi Tabel
-            int no = 1;
-            while (R.next()) {
-                // Sesuaikan: Ambil kolom 'nama_barang' dari alias b di SQL
-                String nama_barang = R.getString("nama_barang"); 
+        java.sql.PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, tglMulai);
+        ps.setString(2, tglSampai);
 
-                // Sesuaikan: Ambil kolom 'kategori'
-                String kategori = R.getString("kategori"); 
+        java.sql.ResultSet rs = ps.executeQuery();
 
-                // Alias 'total_qty' tetap sama karena kita definisikan di SQL
-                String qty = R.getString("total_qty");
+        // 5. Isi tabel
+        int no = 1;
+        while (rs.next()) {
+            String nama = rs.getString("nama_barang");
+            String kategori = rs.getString("kategori");
+            int terjual = rs.getInt("total_qty");
+            double pendapatan = rs.getDouble("total_pendapatan");
 
-                // Format Rupiah untuk 'total_uang'
-                double duit = R.getDouble("total_uang");
-                String duitStr = String.format("Rp %,.0f", duit).replace(',', '.');
+            String rupiah = String.format("Rp %,.0f", pendapatan).replace(',', '.');
 
-                // Masukkan ke array sesuai urutan kolom tabel Anda
-                Object[] data = {no++, nama_barang, kategori, qty, duitStr};
-                model.addRow(data);
-
-            }
-            
-            // Validasi jika kosong
-            if (model.getRowCount() == 0) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Tidak ada data penjualan di periode ini.");
-            }
-
-        } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            model.addRow(new Object[]{
+                no++, nama, kategori, terjual, rupiah
+            });
         }
-    }
 
+        // 6. Jika data kosong
+        if (model.getRowCount() == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Tidak ada data penjualan pada periode ini");
+        }
 
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Gagal memuat data: " + e.getMessage());
+    } }
 }

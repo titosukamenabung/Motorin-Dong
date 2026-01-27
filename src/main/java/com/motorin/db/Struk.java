@@ -18,8 +18,8 @@ public class Struk {
 
         // Header
         s.append("================================================\n");
-        s.append("              BERKAH JAYA MAKMUR                \n");
-        s.append("       Pusat Motor Terlengkap & Termurah        \n");
+        s.append("              Toko Sperpart Motorin                \n");
+        s.append("       Pusat sperpart Terlengkap & Termurah        \n");
         s.append("================================================\n");
 
         // Data Transaksi

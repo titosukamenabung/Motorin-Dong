@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import com.motorin.db.koneksi;
 import com.motorin.db.pegawai;
+import com.motorin.db.User;
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -183,64 +184,60 @@ public class LoginPage extends javax.swing.JFrame {
 
     private void LoginNow() {
         String usr = txtUsername.getText();
-        String pwd = new String(txtPassword.getPassword());
-        try {
-            Connection K = koneksi.Go();
-            Statement ST = K.createStatement();
-            String Q = "SELECT * FROM pegawai "
-                    + "WHERE "
-                    + "username='" + usr + "' AND "
-                    + "password='" + pwd + "'";
-            ResultSet RS = ST.executeQuery(Q);
-            int n = 0;
-            pegawai Pg = new pegawai();
-            while (RS.next()) {
-                n++;
-                Pg.setId(RS.getInt("id_pegawai"));
-                Pg.setNama(RS.getString("nama"));
-                Pg.setUsername(RS.getString("username"));
-                Pg.setPassword(RS.getString("password"));
-                Pg.setJabatan(RS.getString("jabatan"));
-            }
-            if (n > 0) {
-                this.setVisible(false); // Sembunyikan login page
-                this.dispose(); // Hapus dari memori
+    String pwd = new String(txtPassword.getPassword());
+    try {
+        Connection K = koneksi.Go();
+        Statement ST = K.createStatement();
+        String Q = "SELECT * FROM pegawai WHERE username='" + usr + "' AND password='" + pwd + "'";
+        ResultSet RS = ST.executeQuery(Q);
+        
+        int n = 0;
+        pegawai Pg = new pegawai();
+        
+      while (RS.next()) {
+    n++;
+    String jbt = RS.getString("jabatan"); 
+    String namaPegawai = RS.getString("nama"); // Pastikan nama kolom di DB benar
+    
+    // SIMPAN KE LOKER Users.java (PENTING!)
+    com.motorin.db.User.setJabatan(jbt); 
+    com.motorin.db.User.setNama(namaPegawai); // TAMBAHKAN BARIS INI
+    
+    Pg.setUsername(RS.getString("username"));
+    Pg.setJabatan(jbt);
+    Pg.setNama(namaPegawai); 
+}
 
-                if (Pg.getJabatan().equalsIgnoreCase("admin")) {
-                    Dashboard D = new Dashboard();
-                    D.P = Pg; // Kirim data pegawai ke dashboard
-                    D.setVisible(true);
-                    D.setExtendedState(Frame.MAXIMIZED_BOTH);
-                    
-                } else if (Pg.getJabatan().equalsIgnoreCase("KASIR")) {
-                    // Redirect ke dashboard kasir
-                    DashboardKasir DK = new DashboardKasir();
-                    // DK.P = Pg; // Jika di DashboardKasir ada variabel public pegawai P
-                    DK.setVisible(true);
-                    DK.setExtendedState(Frame.MAXIMIZED_BOTH);
-                    
-                } else if (Pg.getJabatan().equalsIgnoreCase("MANAJER")) {
-                    this.dispose(); 
-                    DashboardManajer DM = new DashboardManajer();
+        if (n > 0) {
+            this.dispose(); // Menutup LoginPage
 
-                    // 1. Kirim datanya
-                    DM.P = Pg; 
+            if (Pg.getJabatan().equalsIgnoreCase("admin")) {
+                Dashboard D = new Dashboard();
+                D.P = Pg; // Kirim data pegawai ke Dashboard Admin
+                D.setVisible(true);
+                D.setExtendedState(Frame.MAXIMIZED_BOTH);
 
-                    // 2. Panggil method yang baru kamu buat tadi
-                    DM.updateInfo(); 
+            } else if (Pg.getJabatan().equalsIgnoreCase("KASIR")) {
+                DashboardKasir DK = new DashboardKasir();
+                DK.P = Pg; // Kirim data pegawai ke Dashboard Kasir (Penting!)
+                DK.setVisible(true);
+                DK.setExtendedState(Frame.MAXIMIZED_BOTH);
 
-                    DM.setVisible(true);
-                    DM.setExtendedState(Frame.MAXIMIZED_BOTH); 
-                } else {
-                    JOptionPane.showMessageDialog(this, "Jabatan tidak dikenali!");
-                    this.setVisible(true);
-                }
+            } else if (Pg.getJabatan().equalsIgnoreCase("MANAJER")) {
+                DashboardManajer DM = new DashboardManajer();
+                DM.P = Pg; // Kirim data pegawai ke Dashboard Manajer
+                DM.updateInfo(); // Menampilkan info user di dashboard
+                DM.setVisible(true);
+                DM.setExtendedState(Frame.MAXIMIZED_BOTH);
+                
             } else {
-                JOptionPane.showMessageDialog(this, "Username atau Password Salah!");
+                JOptionPane.showMessageDialog(this, "Jabatan tidak dikenali!");
             }
-        } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Terjadi error pada database:\n" + e.getMessage());
+        } else {
+            JOptionPane.showMessageDialog(this, "Username atau Password Salah!");
         }
-
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Terjadi error pada database:\n" + e.getMessage());
+    }
     }
 }

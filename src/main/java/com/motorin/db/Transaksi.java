@@ -8,9 +8,11 @@ package com.motorin.db;
 public class Transaksi {
     private int id_transaksi;
     private String id_pelanggan;
-    private String nama_pegawai;
+    private String _pegawai;
     private String tanggal;
     private String total_harga;
+    private String nama_pegawai;
+    private String id_barang;
 
     public int getId_transaksi() {
         return id_transaksi;
@@ -29,6 +31,7 @@ public class Transaksi {
     }
 
     public String getNama_pegawai() {
+        String nama_pegawai = null;
         return nama_pegawai;
     }
 
@@ -50,6 +53,10 @@ public class Transaksi {
 
     public void setTotal_harga(String total_harga) {
         this.total_harga = total_harga;
+    }
+    
+     public void setid_barang(String id_barang) {
+        this.id_barang = id_barang;
     }
    
 }
