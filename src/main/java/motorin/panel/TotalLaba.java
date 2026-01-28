@@ -45,7 +45,7 @@ public class TotalLaba extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("TOTAL PENDAPATAN");
+        jLabel1.setText("TOTAL LABA");
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 

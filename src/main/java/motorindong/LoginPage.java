@@ -137,10 +137,10 @@ public class LoginPage extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 280, 400, -1));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/logo motor[5].png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo_motor.png"))); // NOI18N
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 230, 310, 300));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/background login 1.jpg"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/background_login .jpg"))); // NOI18N
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 1250, -1));
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
